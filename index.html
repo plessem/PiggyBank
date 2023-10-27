@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Allowance Tracker</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        text-align: center;
+      }
+      #allowance-container {
+        margin: 20px auto;
+        padding: 20px;
+        border: 1px solid #ccc;
+        max-width: 400px;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="allowance-container">
+      <h1>Allowance Tracker</h1>
+      <p>Kids' Savings: <span id="savings">0</span> USD</p>
+      <p>Goal: <span id="goal">100</span> USD</p>
+      <p>Remaining to Goal: <span id="remaining">100</span> USD</p>
+
+      <div>
+        <label for="allowance">Add Allowance: </label>
+        <input type="number" id="allowance" />
+        <button onclick="addAllowance()">Add</button>
+      </div>
+
+      <div>
+        <label for="purchase">Make a Purchase: </label>
+        <input type="number" id="purchase" />
+        <button onclick="makePurchase()">Purchase</button>
+      </div>
+    </div>
+
+    <script>
+      let savings = 0;
+      let goal = 100;
+
+      function updateUI() {
+        const savingsElement = document.getElementById("savings");
+        const remainingElement = document.getElementById("remaining");
+
+        savingsElement.textContent = savings.toFixed(2);
+        remainingElement.textContent = (goal - savings).toFixed(2);
+      }
+
+      function addAllowance() {
+        const allowance = parseFloat(
+          document.getElementById("allowance").value
+        );
+        if (!isNaN(allowance) && allowance > 0) {
+          savings += allowance;
+          updateUI();
+        }
+      }
+
+      function makePurchase() {
+        const purchase = parseFloat(document.getElementById("purchase").value);
+        if (!isNaN(purchase) && purchase > 0) {
+          if (purchase <= savings) {
+            savings -= purchase;
+            updateUI();
+          } else {
+            alert("Not enough savings for this purchase.");
+          }
+        }
+      }
+
+      updateUI();
+    </script>
+  </body>
+</html>
