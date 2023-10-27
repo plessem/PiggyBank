@@ -20,33 +20,67 @@
   <body>
     <div id="allowance-container">
       <h1>Allowance Tracker</h1>
+      <p>Kid's Name: <span id="kid-name">John</span></p>
       <p>Kids' Savings: <span id="savings">0</span> USD</p>
-      <p>Goal: <span id="goal">100</span> USD</p>
-      <p>Remaining to Goal: <span id="remaining">100</span> USD</p>
+      <p>Goal: $<span id="goal">100</span></p>
+      <p>Remaining to Goal: $<span id="remaining">100</span></p>
 
       <div>
-        <label for="allowance">Add Allowance: </label>
+        <label for="kid-name-input">Change Kid's Name: </label>
+        <input type="text" id="kid-name-input" />
+        <button onclick="changeKidName()">Change</button>
+      </div>
+
+      <div>
+        <label for="goal-input">Change Goal: $</label>
+        <input type="number" id="goal-input" />
+        <button onclick="changeGoal()">Change</button>
+      </div>
+
+      <div>
+        <label for="allowance">Add Allowance: $</label>
         <input type="number" id="allowance" />
         <button onclick="addAllowance()">Add</button>
       </div>
 
       <div>
-        <label for="purchase">Make a Purchase: </label>
+        <label for="purchase">Make a Purchase: $</label>
         <input type="number" id="purchase" />
         <button onclick="makePurchase()">Purchase</button>
       </div>
     </div>
 
     <script>
+      let kidName = "John";
       let savings = 0;
       let goal = 100;
 
       function updateUI() {
+        const kidNameElement = document.getElementById("kid-name");
         const savingsElement = document.getElementById("savings");
+        const goalElement = document.getElementById("goal");
         const remainingElement = document.getElementById("remaining");
 
+        kidNameElement.textContent = kidName;
         savingsElement.textContent = savings.toFixed(2);
+        goalElement.textContent = goal.toFixed(2);
         remainingElement.textContent = (goal - savings).toFixed(2);
+      }
+
+      function changeKidName() {
+        const newKidName = document.getElementById("kid-name-input").value;
+        if (newKidName.trim() !== "") {
+          kidName = newKidName;
+          updateUI();
+        }
+      }
+
+      function changeGoal() {
+        const newGoal = parseFloat(document.getElementById("goal-input").value);
+        if (!isNaN(newGoal) && newGoal > 0) {
+          goal = newGoal;
+          updateUI();
+        }
       }
 
       function addAllowance() {
