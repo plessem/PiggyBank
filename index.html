@@ -15,38 +15,97 @@
         border: 1px solid #ccc;
         max-width: 400px;
       }
+      #progress-section {
+        margin-top: 20px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+      }
+      #progress-title {
+        font-size: 18px;
+        font-weight: bold;
+        margin-bottom: 10px;
+      }
+      #progress-bar-container {
+        width: 100%;
+        background-color: #eee;
+        border-radius: 5px;
+        overflow: hidden;
+        position: relative;
+        margin-top: 10px;
+        height: 20px; /* added height */
+      }
+      #progress-bar {
+        height: 100%; /* changed height to 100% */
+        width: 0;
+        background-color: #4caf50;
+        border-radius: 5px;
+        position: absolute;
+        top: 0;
+        left: 0;
+      }
+      #goal-label {
+        margin-top: 10px;
+        text-align: right;
+        width: 100%; /* added width */
+      }
+      #progress-goal {
+        float: right; /* added float */
+      }
+      /* Added styles for spacing and input size */
+      .input-container {
+        margin-bottom: 10px; /* increased margin */
+        text-align: center;
+      }
+      input {
+        width: 80px; /* Adjust as needed */
+      }
     </style>
   </head>
   <body>
     <div id="allowance-container">
       <h1>Allowance Tracker</h1>
-      <p>Kid's Name: <span id="kid-name">John</span></p>
-      <p>Kids' Savings: <span id="savings">0</span> USD</p>
+      <p><span id="kid-name">John</span></p>
+      <p>
+        <span id="kid-name-pos">John's</span> Savings: $<span id="savings"
+          >0</span
+        >
+      </p>
       <p>Goal: $<span id="goal">100</span></p>
       <p>Remaining to Goal: $<span id="remaining">100</span></p>
+      <br /><br />
 
-      <div>
+      <div class="input-container">
         <label for="kid-name-input">Change Kid's Name: </label>
         <input type="text" id="kid-name-input" />
         <button onclick="changeKidName()">Change</button>
       </div>
 
-      <div>
+      <div class="input-container">
         <label for="goal-input">Change Goal: $</label>
         <input type="number" id="goal-input" />
         <button onclick="changeGoal()">Change</button>
       </div>
 
-      <div>
+      <div class="input-container">
         <label for="allowance">Add Allowance: $</label>
         <input type="number" id="allowance" />
         <button onclick="addAllowance()">Add</button>
       </div>
 
-      <div>
+      <div class="input-container">
         <label for="purchase">Make a Purchase: $</label>
         <input type="number" id="purchase" />
         <button onclick="makePurchase()">Purchase</button>
+      </div>
+      <br /><br />
+
+      <div id="progress-section">
+        <div id="progress-title">Progress Towards Goal</div>
+        <div id="progress-bar-container">
+          <div id="progress-bar"></div>
+        </div>
+        <div id="goal-label">$<span id="progress-goal">100</span></div>
       </div>
     </div>
 
@@ -57,14 +116,24 @@
 
       function updateUI() {
         const kidNameElement = document.getElementById("kid-name");
+        const kidNamePosElement = document.getElementById("kid-name-pos");
         const savingsElement = document.getElementById("savings");
         const goalElement = document.getElementById("goal");
         const remainingElement = document.getElementById("remaining");
+        const progressBar = document.getElementById("progress-bar");
+        const progressGoalElement = document.getElementById("progress-goal");
 
         kidNameElement.textContent = kidName;
+        kidNamePosElement.textContent = kidName + "'s";
         savingsElement.textContent = savings.toFixed(2);
         goalElement.textContent = goal.toFixed(2);
         remainingElement.textContent = (goal - savings).toFixed(2);
+
+        const progressPercentage = (savings / goal) * 100;
+        progressBar.style.width = progressPercentage + "%";
+
+        // Update the progress goal amount
+        progressGoalElement.textContent = goal.toFixed(2);
       }
 
       function changeKidName() {
